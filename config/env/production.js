@@ -4,6 +4,7 @@
  */
 
 module.exports = {
+  // db: 'mongodb://db/noobjs_dev?authSource=admin',
   db: process.env.MONGOHQ_URL,
   facebook: {
     clientID: process.env.FACEBOOK_CLIENTID,

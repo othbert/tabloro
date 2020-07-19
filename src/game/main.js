@@ -44,7 +44,7 @@ function create() {
     setupTable();
 
     G.init(game);
-    
+
     var sortByValue = R.sortBy(R.prop('order'));
 
     var s = R.compose(R.sum, R.filter(R.lte(1)), R.map(R.prop('order')))(assets);
@@ -75,7 +75,7 @@ function zoom (mult) {
     // var step;
     // if (navigator.userAgent.match(/Firefox/)){
     //     step = 0.02;
-    //     currFFZoom += step * mult; 
+    //     currFFZoom += step * mult;
     //     $('body').css('MozTransform','scale(' + currFFZoom + ')');
     // } else {
     //     step = 2;
@@ -109,7 +109,7 @@ function setupStage() {
 
 
     //  A simple background for our game
-    
+
     game.world.setBounds(0, 0, World.width, World.height);
     game.scale.setScreenSize(true);
     game.stage.disableVisibilityChange = true; // loose tab focus, game will continue
@@ -194,7 +194,7 @@ function setupAssets (gameAssets) {
             } else if (asset.isStash){
                 addStash(groupName, yOffset, R.head(R.of(asset.counts)) || 1, group);
             } else {
-                addCards(groupName, yOffset, buildAssetArray(asset, maxFrames), group);
+                addCards(groupName, yOffset, buildAssetArray(asset, maxFrames), group, asset.rotateBy);
             }
         }
 
@@ -210,7 +210,7 @@ function setupAssets (gameAssets) {
 function addStash (title, yOffset, array, group) {
     console.log('addStash', title, yOffset, array, group);
     var offsetX = 0;
-    
+
     R.times(function (n) {
         var tile = group.create(offsetX, yOffset, title, n);
         tile.defaultFrame = 1;
@@ -219,7 +219,7 @@ function addStash (title, yOffset, array, group) {
         T.hide(tile);
 
     })(array);
-    
+
 }
 
 
@@ -316,7 +316,7 @@ function update() {
     else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)
              || game.input.keyboard.isDown(Phaser.Keyboard.D) && !UI.chatVisible())
     {
-        game.camera.x += 50;   
+        game.camera.x += 50;
     }
     else if(game.input.keyboard.isDown(Phaser.Keyboard.ENTER)) {
         UI.enterPressed();

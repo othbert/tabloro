@@ -43,14 +43,37 @@ eurecaServer.attach(server);
 
 
 // Connect to mongodb
-var connect = function () {
-  var options = { server: { socketOptions: { keepAlive: 1 } } };
-  mongoose.connect(config.db, options);
-};
-connect();
+// var connect = function () {
+//   var options = { server: { socketOptions: { keepAlive: 1 } } };
+//   mongoose.connect(config.db, options);
+// };
+// connect();
+const mongooseOptions = {
+  server: {
+    socketOptions: {
+      keepAlive: 1
+    }
+  },
+  autoIndex: false, // Don't build indexes
+  reconnectTries: 30, // Retry up to 30 times
+  reconnectInterval: 500, // Reconnect every 500ms
+  poolSize: 10, // Maintain up to 10 socket connections
+  // If not connected, return errors immediately rather than waiting for reconnect
+  bufferMaxEntries: 0
+}
+const connectWithRetry = () => {
+  console.log('MongoDB connection with retry')
+  mongoose.connect(config.db, mongooseOptions).then(()=>{
+    console.log('MongoDB is connected')
+  }).catch(err=>{
+    console.log('MongoDB connection unsuccessful, retry after 5 seconds.')
+    setTimeout(connectWithRetry, 5000)
+  })
+}
+connectWithRetry()
 
 mongoose.connection.on('error', log);
-mongoose.connection.on('disconnected', connect);
+mongoose.connection.on('disconnected', connectWithRetry);
 
 // Bootstrap models
 fs.readdirSync(__dirname + '/app/models').forEach(function (file) {

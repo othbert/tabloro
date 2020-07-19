@@ -1,4 +1,3 @@
-
 #  <a href="http://www.tabloro.com/" target="_blank" class="tabloro" >Tabloro.com</a>
 
 Your game table in the browser. Play <strong>any</strong> board or card game with friends & family.
@@ -21,10 +20,6 @@ Using functional programming concepts in many areas. Instead of classes i have u
 Released under MIT License https://opensource.org/licenses/MIT
 
 <a href="http://ramdajs.com/">Ramda</a> is used throughout as functional toolkit. Its a little bit cleaner than underscore or lo-dash, but thats also a matter of taste.
-
-<img src="http://www.tabloro.com/img/meta.jpg"></img>
-
-
 
 
 You need to set the env variables for your amazon s3 storage etc.
@@ -62,3 +57,16 @@ PORT
 
 e.g. 80
 
+## docker-compose instruction ##
+Added a very basic docker-compose setup with 3 containers:
+
+- nodejs from `node:*`
+- mongodb from `mongo:latest`
+- mongo client from `mongoclient/mongoclient`
+
+docker-compose.yaml has some configurable parameters, but should all work out of the box.
+
+one liner for startup:
+
+`docker-compose down --remove-orphans && docker-compose up -d --force-recreate && docker-compose logs -f`
+  

@@ -1,0 +1,49 @@
+version: '3.1'
+
+volumes:
+  mongo:
+  monitor-data:
+  monitor-config:
+
+networks:
+  tabloro:
+
+services:
+  node:
+    container_name: node
+    image: "node:8.10"
+    user: "node"
+    working_dir: /home/node/app
+    env_file:
+      - docker.env
+    volumes:
+      - ./:/home/node/app
+    ports:
+      - 8081:8081
+    command: sh -c "npm install && npm start"
+    networks:
+      - tabloro
+
+  db:
+    container_name: db
+    image: mongo:latest
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo:/data/db
+    networks:
+      - tabloro
+
+  dbmon:
+    container_name: dbmon
+    image: mongoclient/mongoclient
+    restart: always
+    ports:
+      - 3030:3000
+    volumes:
+      - monitor-data:/data/db
+      - monitor-config:/data/configdb
+    networks:
+      - tabloro
+

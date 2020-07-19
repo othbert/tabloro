@@ -6,3 +6,5 @@ Makefile
 *.sublime*
 package-lock.json
 export/
+.idea/
+docker.env
